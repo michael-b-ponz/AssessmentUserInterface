@@ -10,4 +10,12 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Images\WIN_20240219_03_45_01_Pro.jpg" />
+  </ItemGroup>
+
 </Project>

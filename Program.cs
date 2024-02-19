@@ -1,13 +1,29 @@
+using AssessmentUserInterface.Controllers;
 using AssessmentUserInterface.Data;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
+using AssessmentUserInterface.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddScoped<UserController>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<AssessmentUserInterface.Components.UserCrudForm>();
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    options.UseInMemoryDatabase("UserDb");
+});
+
+using (var scope = builder.Services.BuildServiceProvider().CreateScope())
+{
+    var serviceProvider = scope.ServiceProvider;
+    var dbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
+    SeedInMemoryData.InitializeAsync(dbContext).Wait();
+}
 
 var app = builder.Build();
 
